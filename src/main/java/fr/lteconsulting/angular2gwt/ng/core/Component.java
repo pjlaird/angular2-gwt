@@ -26,4 +26,6 @@ public @interface Component
 	Class<?>[] providers() default {};
 
 	Class<? extends AnimationProvider>[] animations() default {};
+	
+	ViewEncapsulationEnum encapsulation() default ViewEncapsulationEnum.Emulated;
 }

@@ -64,6 +64,7 @@ import fr.lteconsulting.angular2gwt.ng.core.Pipe;
 import fr.lteconsulting.angular2gwt.ng.core.PropertyGetter;
 import fr.lteconsulting.angular2gwt.ng.core.ViewChild;
 import fr.lteconsulting.angular2gwt.ng.core.ViewChildren;
+import fr.lteconsulting.angular2gwt.ng.core.ViewEncapsulationEnum;
 import fr.lteconsulting.roaster.Block;
 import fr.lteconsulting.roaster.JavaClassText;
 import jsinterop.annotations.JsProperty;
@@ -226,6 +227,7 @@ public class JsInteropOutputProcessor
 		javaClassText.addImport( fr.lteconsulting.angular2gwt.client.interop.ng.core.Component.class.getName() );
 		javaClassText.addImport( ComponentMetadata.class.getName() );
 		javaClassText.addImport( JsToolsInjector.class.getName() );
+		javaClassText.addImport( ViewEncapsulationEnum.class.getName() );
 
 		Block classBlock = javaClassText.rootBlock().clazz( angularComponentName );
 
@@ -241,6 +243,7 @@ public class JsInteropOutputProcessor
 		String host = findDirectiveHostsEventActions( element, classBlock );
 		String animations = findAnimationProviders( element );
 		String inputs = findInputs( element );
+		ViewEncapsulationEnum encapsulation = annotation.encapsulation();
 
 		findPropertyGetters( element );
 
@@ -293,6 +296,9 @@ public class JsInteropOutputProcessor
 					i.line( "options.set( \"host\", [{}] );", host );
 				if( animations != null )
 					i.line( "options.set( \"animations\", [{}] );", animations );
+				if (encapsulation != ViewEncapsulationEnum.Emulated) {
+					i.line( "options.set( \"encapsulation\", [{}] );", encapsulation.ordinal() );
+				}
 				if( !viewChildFields.isEmpty() )
 				{
 					i.line( "JsObject queries = new JsObject();" );
